@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Exploration – Section Rania</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark glass-nav shadow-lg">
+    <div class="container-fluid px-4">
+      <span class="navbar-brand fw-bold d-flex align-items-center">
+        <i class="fa-solid fa-chart-bar me-2" style="font-size: 1.4rem;"></i>
+        Exploration des Données
+      </span>
+      <div class="ms-auto d-flex gap-2">
+        <a href="index.html" class="btn btn-admin">
+          <i class="fa-solid fa-user-graduate me-2"></i>BINOME 1
+        </a>
+        <a href="http://127.0.0.1:5000/admin" class="btn btn-admin">
+          <i class="fa-solid fa-chart-line me-2"></i>Dashboard Admin
+        </a>
+        <a href="../index.html" class="btn btn-admin">
+          <i class="fa-solid fa-home me-2"></i>BINOME 2
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div class="row g-4">
+      <div class="col-12">
+        <div class="glass-card p-4">
+          <h4 class="section-header">
+            <i class="fa-solid fa-layer-group me-2"></i>
+            Comptes par spécialité
+          </h4>
+          <canvas id="chartOptions" height="140"></canvas>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="glass-card p-4">
+          <h4 class="section-header">
+            <i class="fa-solid fa-diagram-project me-2"></i>
+            Comptes par cluster
+          </h4>
+          <canvas id="chartClusters" height="140"></canvas>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="glass-card p-4">
+          <h4 class="section-header">
+            <i class="fa-solid fa-chart-simple me-2"></i>
+            Moyennes par cluster
+          </h4>
+          <canvas id="chartAvgScores" height="140"></canvas>
+        </div>
+      </div>
+
+      <div class="col-12">
+        <div class="glass-card p-4">
+          <h4 class="section-header">
+            <i class="fa-solid fa-users me-2"></i>
+            Profils d’apprenants
+          </h4>
+          <div class="row g-3 mb-3">
+            <div class="col-md-3">
+              <label class="form-label">Cluster</label>
+              <select id="filterCluster" class="form-select futuristic-input">
+                <option value="">Tous</option>
+                <option value="faible">Faible</option>
+                <option value="moyen">Moyen</option>
+                <option value="excellent">Excellent</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Spécialité</label>
+              <select id="filterOption" class="form-select futuristic-input"></select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table table-sm align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>ID</th>
+                  <th>Spécialité</th>
+                  <th>Cluster</th>
+                  <th>Maths</th>
+                  <th>Physique</th>
+                  <th>Littérature</th>
+                  <th>Anglais</th>
+                </tr>
+              </thead>
+              <tbody id="studentsTable"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="exploration.js"></script>
+</body>
+</html>
+
