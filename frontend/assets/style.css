@@ -1,0 +1,216 @@
+/* ================================== */
+/*           GLOBAL DESIGN            */
+/* ================================== */
+
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #0A1A2F, #102541, #0A1A2F);
+  background-attachment: fixed;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+/* ================================== */
+/*               NAVBAR               */
+/* ================================== */
+
+.main-navbar, .glass-nav {
+  background: rgba(10, 20, 40, 0.55);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 12px 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-admin {
+  background: #2563eb;
+  color: white;
+  border-radius: 8px;
+  padding: 6px 14px;
+  transition: 0.25s ease;
+}
+.btn-admin:hover {
+  background: #1e40af;
+  transform: translateY(-2px);
+}
+
+/* ================================== */
+/*               HERO                  */
+/* ================================== */
+
+.hero {
+  position: relative;
+  height: 240px;
+  background: url("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80") center/cover no-repeat;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+.hero .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+}
+.hero .hero-content {
+  position: relative;
+  z-index: 5;
+  text-align: center;
+  padding-top: 70px;
+}
+
+/* ================================== */
+/*             GLASS CARDS            */
+/* ================================== */
+
+.glass-card {
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.18);
+  padding: 25px;
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #f8fafc;
+  transition: 0.35s ease-in-out;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+}
+
+.glass-card:hover {
+  background: rgba(255, 255, 255, 0.24);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* ================================== */
+/*            TITRES JAUNES           */
+/* ================================== */
+
+.section-header {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #facc15 !important;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.section-header i {
+  font-size: 1.5rem;
+  color: #facc15 !important;
+}
+
+/* ================================== */
+/*         ESPACEMENT ENTRE CARDS     */
+/* ================================== */
+
+/* Ajoute seulement un espacement vertical entre les cartes sans casser Bootstrap */
+.custom-gap {
+  margin-top: 30px;
+}
+
+
+/* ================================== */
+/*        INPUTS & FORM STYLE         */
+/* ================================== */
+
+.futuristic-input {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+  color: white;
+  padding: 9px;
+  transition: 0.25s;
+}
+.futuristic-input:focus {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px #2563eb66;
+  color: white;
+}
+
+/* ================================== */
+/*          ANALYSE BUTTON            */
+/* ================================== */
+
+.btn-analyse {
+  background: #2563eb;
+  color: white;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  border: none;
+  transition: 0.25s ease;
+  width: 100%;
+}
+.btn-analyse:hover {
+  background: #1e40af;
+  transform: scale(1.03);
+  box-shadow: 0 4px 12px #1e3a8a66;
+}
+
+/* ================================== */
+/*         RESULT BADGES / TEXT       */
+/* ================================== */
+
+.result-pill {
+  background: #22c55e;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+}
+
+.cluster-pill {
+  background: #38bdf8;
+  padding: 8px 18px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: white;
+}
+
+.recommendation-text {
+  font-size: 1.1rem;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+/* ================================== */
+/*             RESPONSIVE             */
+/* ================================== */
+
+@media (max-width: 900px) {
+  .glass-card {
+    margin-bottom: 20px;
+  }
+}
+/* STYLE SPÉCIFIQUE POUR LES SELECT (Genre, etc.) */
+.futuristic-input select,
+select.futuristic-input {
+  background-color: rgba(255, 255, 255, 0.15) !important;
+  color: white !important;
+  border-radius: 10px;
+  padding: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Quand on ouvre le menu : options lisibles */
+.futuristic-input option {
+  background-color: #1e293b; /* bleu nuit lisible */
+  color: white;
+  padding: 8px;
+}
+
+/* Option hover */
+.futuristic-input option:hover {
+  background-color: #334155;
+}
+/* CENTRER LE FORMULAIRE QUAND LES RÉSULTATS SONT CACHÉS */
+#results-column.d-none + .col-lg-5,
+#student-form-container {
+    margin-left: auto;
+    margin-right: auto;
+}

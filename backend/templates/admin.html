@@ -1,0 +1,201 @@
+<!-- backend/templates/admin.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard Admin – Centre de Formation Intelligent</title>
+
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    body {
+      background: radial-gradient(circle at top, #4b79a1, #283e51);
+      min-height: 100vh;
+    }
+    .card-glass {
+      background: rgba(255,255,255,0.9);
+      border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+      border: 1px solid rgba(255,255,255,0.6);
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body class="text-dark">
+
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container">
+    <span class="navbar-brand fw-bold">📊 Dashboard Admin</span>
+    <a href="http://127.0.0.1:5500/frontend/index.html" class="btn btn-outline-light btn-sm">
+      ⬅ Retour interface étudiant
+    </a>
+  </div>
+</nav>
+
+<div class="container my-4">
+  <div class="row g-3 mb-3">
+    <div class="col-md-3">
+      <div class="card card-glass p-3 text-center">
+        <div class="text-muted small">Nombre total d’analyses</div>
+        <div id="stat-total" class="fs-3 fw-bold">0</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card card-glass p-3 text-center">
+        <div class="text-muted small">Dernier niveau prédit</div>
+        <div id="stat-last-level" class="fs-4 fw-bold">—</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card card-glass p-3 text-center">
+        <div class="text-muted small">Dernier cluster</div>
+        <div id="stat-last-cluster" class="fs-4 fw-bold">—</div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card card-glass p-3 text-center">
+        <div class="text-muted small">Dernière analyse</div>
+        <div id="stat-last-time" class="fs-6 fw-bold">—</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-3 mb-4">
+    <div class="col-md-6">
+      <div class="card card-glass p-3">
+        <h6 class="mb-3">Répartition des niveaux</h6>
+        <canvas id="chartLevels" height="170"></canvas>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card card-glass p-3">
+        <h6 class="mb-3">Répartition des clusters soft skills</h6>
+        <canvas id="chartClusters" height="170"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-glass p-3">
+    <h6 class="mb-3">Dernières prédictions</h6>
+    <div class="table-responsive">
+      <table class="table table-sm align-middle">
+        <thead class="table-light">
+          <tr>
+            <th>Date/Heure</th>
+            <th>Age</th>
+            <th>Genre</th>
+            <th>Région</th>
+            <th>Niveau</th>
+            <th>Cluster</th>
+            <th>Recommandation</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <!-- lignes ajoutées via JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+let chartLevels = null;
+let chartClusters = null;
+
+async function refreshDashboard() {
+  const res = await fetch("/admin_data");
+  const data = await res.json();
+
+  // Statistiques simples
+  const total = data.length;
+  document.getElementById("stat-total").textContent = total;
+
+  if (total > 0) {
+    const last = data[total - 1];
+    document.getElementById("stat-last-level").textContent = last.predicted_level;
+    document.getElementById("stat-last-cluster").textContent = "Cluster " + last.cluster_soft;
+    document.getElementById("stat-last-time").textContent = last.timestamp;
+  }
+
+  // Comptage par niveau
+  const levelCounts = {};
+  const clusterCounts = {};
+  data.forEach((row) => {
+    levelCounts[row.predicted_level] = (levelCounts[row.predicted_level] || 0) + 1;
+    const c = "Cluster " + row.cluster_soft;
+    clusterCounts[c] = (clusterCounts[c] || 0) + 1;
+  });
+
+  const levelLabels = Object.keys(levelCounts);
+  const levelValues = Object.values(levelCounts);
+
+  const clusterLabels = Object.keys(clusterCounts);
+  const clusterValues = Object.values(clusterCounts);
+
+  // Graphique niveaux
+  const ctxLevels = document.getElementById("chartLevels").getContext("2d");
+  if (chartLevels) chartLevels.destroy();
+  chartLevels = new Chart(ctxLevels, {
+    type: "bar",
+    data: {
+      labels: levelLabels,
+      datasets: [{
+        label: "Nombre d’étudiants",
+        data: levelValues
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  // Graphique clusters
+  const ctxClusters = document.getElementById("chartClusters").getContext("2d");
+  if (chartClusters) chartClusters.destroy();
+  chartClusters = new Chart(ctxClusters, {
+    type: "bar",
+    data: {
+      labels: clusterLabels,
+      datasets: [{
+        label: "Nombre d’étudiants",
+        data: clusterValues
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: { y: { beginAtZero: true } }
+    }
+  });
+
+  // Remplir le tableau
+  const tbody = document.getElementById("table-body");
+  tbody.innerHTML = "";
+  [...data].slice(-50).reverse().forEach((row) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${row.timestamp}</td>
+      <td>${row.age ?? ""}</td>
+      <td>${row.gender ?? ""}</td>
+      <td>${row.region ?? ""}</td>
+      <td><span class="badge bg-primary">${row.predicted_level}</span></td>
+      <td><span class="badge bg-info text-dark">Cluster ${row.cluster_soft}</span></td>
+      <td class="small">${row.recommendation}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+// 1er chargement + refresh toutes les 5 secondes
+refreshDashboard();
+setInterval(refreshDashboard, 5000);
+</script>
+
+</body>
+</html>
