@@ -26,32 +26,32 @@ async function loadData() {
         label: s.replace('_score', '').replace('_', ' '),
         data: avgScoresByCluster.map((r) => Number(r[s] || 0)),
         backgroundColor: [
-          'rgba(54, 162, 235, 0.6)',
-          'rgba(255, 99, 132, 0.6)',
-          'rgba(255, 206, 86, 0.6)',
-          'rgba(75, 192, 192, 0.6)'
+          'rgba(99, 102, 241, 0.45)',  // Indigo
+          'rgba(16, 185, 129, 0.45)',  // Emerald
+          'rgba(251, 191, 36, 0.45)',  // Amber
+          'rgba(248, 113, 113, 0.45)'  // Red
         ][i % 4]
       }));
 
     const ctxOptions = document.getElementById('chartOptions').getContext('2d');
     new Chart(ctxOptions, {
       type: 'bar',
-      data: { labels: optionLabels, datasets: [{ label: 'Comptes', data: optionValues, backgroundColor: 'rgba(54, 162, 235, 0.6)' }] },
-      options: { responsive: true, plugins: { legend: { display: false } } }
+      data: { labels: optionLabels, datasets: [{ label: 'Comptes', data: optionValues, backgroundColor: 'rgba(99, 102, 241, 0.35)' }] },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(0,0,0,0.06)' } }, x: { grid: { color: 'rgba(0,0,0,0.06)' } } } }
     });
 
     const ctxClusters = document.getElementById('chartClusters').getContext('2d');
     new Chart(ctxClusters, {
       type: 'bar',
-      data: { labels: clusterLabels, datasets: [{ label: 'Comptes', data: clusterValues, backgroundColor: 'rgba(255, 99, 132, 0.6)' }] },
-      options: { responsive: true, plugins: { legend: { display: false } } }
+      data: { labels: clusterLabels, datasets: [{ label: 'Comptes', data: clusterValues, backgroundColor: 'rgba(16, 185, 129, 0.35)' }] },
+      options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { grid: { color: 'rgba(0,0,0,0.06)' } }, x: { grid: { color: 'rgba(0,0,0,0.06)' } } } }
     });
 
     const ctxAvg = document.getElementById('chartAvgScores').getContext('2d');
     new Chart(ctxAvg, {
       type: 'bar',
       data: { labels: avgLabels, datasets },
-      options: { responsive: true }
+      options: { responsive: true, scales: { y: { grid: { color: 'rgba(0,0,0,0.06)' } }, x: { grid: { color: 'rgba(0,0,0,0.06)' } } } }
     });
 
     const optionSelect = document.getElementById('filterOption');
@@ -101,4 +101,3 @@ async function loadData() {
 }
 
 document.addEventListener('DOMContentLoaded', loadData);
-
