@@ -103,7 +103,7 @@ Predict Segment Recommend
 ## ⚙️ Quick Start
 
 ```bash
-git clone https://github.com/your-org/smart-training-center.git
+git clone https://github.com/Hiba-B-Soltan/Centre_De_Formation_.git
 cd smart-training-center
 python -m venv venv && source venv/bin/activate
 pip install -r requirements.txt
